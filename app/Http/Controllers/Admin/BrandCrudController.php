@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\ProductRequest;
+use App\Http\Requests\BrandRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class ProductCrudController
+ * Class BrandCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class ProductCrudController extends CrudController
+class BrandCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class ProductCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Product::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/product');
-        CRUD::setEntityNameStrings('product', 'products');
+        CRUD::setModel(\App\Models\Brand::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/brand');
+        CRUD::setEntityNameStrings('brand', 'brands');
     }
 
     /**
@@ -39,8 +39,8 @@ class ProductCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-//        CRUD::setFromDb(); // set columns from db columns.
-        $this->crud->setColumns(['fa_name','en_name','model','count','shortDescription','fullDescription' ]);
+        CRUD::setFromDb(); // set columns from db columns.
+
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -55,59 +55,29 @@ class ProductCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(ProductRequest::class);
+        CRUD::setValidation(BrandRequest::class);
 //        CRUD::setFromDb(); // set fields from db columns.
-
+        $this->crud->setValidation(BrandRequest::class);
 
         $this->crud->addField([
             'name' => 'fa_name',
             'type' => 'text',
-            'label' => "Product name"
+            'label' => "Tag name"
         ]);
-
         $this->crud->addField([
             'name' => 'en_name',
             'type' => 'text',
-            'label' => "en Product name"
-        ]);
-        $this->crud->addField([
-            'name' => 'model',
-            'type' => 'text',
-            'label' => "model"
-        ]);
-        $this->crud->addField([
-            'name' => 'count',
-            'type' => 'text',
-            'label' => "count"
-        ]);
-        $this->crud->addField([
-            'name' => 'shortDescription',
-            'type' => 'textarea',
-            'attributes' => [
-                'id' => 'ckeditor',
-                'class' => 'form-control some-class'
-            ], // extra HTML
-//            'custom_build' => [
-//                resource_path('assets/ckeditor/ckeditor.js'),
-//                resource_path('assets/ckeditor/ckeditor-init.js'),
-//            ],
+            'label' => "URL Segment (slug)"
         ]);
 
-//        $this->crud->addField([
-//            'name' => 'fullDescription',
-//            'type' => 'ckeditor',
-//            'label' => "full Description ",
-//            'custom_build' => [
-//                resource_path('assets/ckeditor/ckeditor.js'),
-//                resource_path('assets/ckeditor/ckeditor-init.js'),
-//            ],
-//        ]);
+        $this->crud->addField([
+            'name' => 'media_id',
+            'entity'=>'media',
+            'type' => 'select',
+            'label' => "Media Id",
+            'model' => "App\Models\Media",
+        ]);
 
-//        $this->crud->addField([
-//            'name' => 'description',
-//            'type' => 'text',
-//            'label' => "description"
-//        ]);
         /**
          * Fields can be defined using the fluent syntax:
          * - CRUD::field('price')->type('number');
