@@ -84,7 +84,7 @@ class ProductCrudController extends CrudController
             'name' => 'shortDescription',
             'type' => 'textarea',
             'attributes' => [
-                'id' => 'ckeditor',
+                'id' => 'editor',
                 'class' => 'form-control some-class'
             ], // extra HTML
 //            'custom_build' => [
